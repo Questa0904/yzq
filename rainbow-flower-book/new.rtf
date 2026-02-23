@@ -1,0 +1,231 @@
+{\rtf1\ansi\ansicpg936\cocoartf2868
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww11520\viewh8400\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 import React, \{ useState, useRef, useCallback \} from "react";\
+\
+const D = [\
+  \{c:'#DC2626',lc:'#fca5a5',fl:'\uc0\u32418 \u29611 \u29808 ',t:'\u32418 ',s:'\u21435 \u36339 \u36807 \u28779 \u32676 ',ph:['\u55358 \u56808  \u36339 \u28779 \u32676 \u35270 \u39057 ','\u55357 \u56570  \u26149 \u26202 \u32418 \u33394 \u22330 \u26223 '],\
+   b:['\uc0\u20889 \u36825 \u27573 \u30340 \u26102 \u20505 \u27491 \u22312 \u30475 \u26149 \u26202 \u65292 \u30524 \u21069 \u19968 \u29255 \u32418 \u12290 \\n\u28982 \u21518 \u30475 \u35265 \u20320 \u32473 \u25105 \u21457 \u20102 \u36339 \u28779 \u32676 \u30340 \u35270 \u39057 \u12290 \\n\u20043 \u21069 \u21548 \u25104 \u36339 \u28779 \u22280 \u65292 \u20197 \u20026 \u20250 \u25343 \u30406 \u23376 \u20043 \u31867 \u30340 \u23481 \u22120 \u32473 \u22280 \u36215 \u26469 \u65292 \u32467 \u26524 \u23601 \u26159 \u26408 \u22836 \u21472 \u22312 \u19968 \u36215 \u12290 \\n\u37027 \u28779 \u36319 \u37326 \u28779 \u19968 \u26679 \u65292 \u36479 \u32769 \u39640 \u20102 \u12290 ','\u24515 \u24773 \u26159 \u20204 \u31119 \u24314 \u20154 \u30495 \u30340 \u26159 \u21508 \u26041 \u38754 \u37117 \u22312 \u35808 \u37322 \u23500 \u36149 \u38505 \u20013 \u27714 \u12290 \\n\u21191 \u25954 \u30340 \u20154 \u26377 \u21191 \u25954 \u30340 \u20064 \u20439 \u12290 ','\u25105 \u21916 \u27426 \u21548 \u20320 \u35828 \u23478 \u20065 \u30340 \u19968 \u20999 \u12290 \\n\u21548 \u20320 \u22312 \u21508 \u20010 \u20154 \u29983 \u38454 \u27573 \u30340 \u38598 \u20307 \u29983 \u27963 \u65292 \u21548 \u20320 \u26469 \u21040 \u25105 \u36523 \u36793 \u20043 \u21069 \u65292 \u26377 \u24590 \u26679 \u30340 \u30340 \u38469 \u36935 \u65311 \u26159 \u20160 \u20040 \u26679 \u30340 \u25991 \u21270 \u22609 \u36896 \u20102 \u20320 \u65311 \u20320 \u36873 \u25321 \u35753 \u20160 \u20040 \u26679 \u30340 \u25991 \u21270 \u22609 \u36896 \u20320 \u65311 \\n\u22240 \u20026 \u21916 \u27426 \u65292 \u25152 \u20197 \u22909 \u22855 \u65292 \u25152 \u20197 \u20840 \u24773 \u25237 \u20837 \u65292 \u28982 \u21518 \u36234 \u26159 \u25237 \u20837 \u65292 \u36234 \u26159 \u21916 \u27426 \u12290 ','\u20294 \u25226 \u30446 \u20809 \u36716 \u21521 \u25105 \u25152 \u24471 \u21040 \u30340 \u26102 \u65292 \u25105 \u24573 \u28982 \u19981 \u23475 \u24597 \u20102 \u65306 \\n\u25105 \u29616 \u22312 \u30693 \u36947 \u20102 \u21338 \u23398 \u30340 \u20320 \u12289 \u29983 \u27668 \u30340 \u20320 \u12289 \u23475 \u32670 \u30340 \u20320 \u12289 \u24863 \u24615 \u30340 \u20320 \u12289 \u22351 \u22351 \u30340 \u20320 ...\u25105 \u21457 \u29616 \u25105 \u36824 \u24819 \u30693 \u36947 \u26356 \u22810 \u30340 \u20320 \u12290 \\n\u32780 \u24184 \u36816 \u30340 \u26159 \u20320 \u24517 \u28982 \u26377 \u26356 \u22810 \u30340 \u20320 \u65292 \u22240 \u20026 \u25105 \u30693 \u36947 \u20320 \u26159 \u37027 \u31181 \u27704 \u36828 \u22312 \u25104 \u38271 \u30340 \u20154 \u12290 ','\u26410 \u26469 \u30340 \u26080 \u25968 \u20010 \u20320 \u24635 \u26159 \u22312 \u25105 \u24819 \u35201 \u25918 \u24323 \u30340 \u26102 \u20505 \u22312 \u25105 \u33041 \u28023 \u20013 \u21457 \u20986 \u21628 \u21796 \u65292 \u25105 \u36880 \u28176 \u29702 \u35299 \u21040 \u65306 \u24403 \u28212 \u26395 \u22823 \u20110 \u24656 \u24807 \u26102 \u65292 \u21191 \u27668 \u23601 \u35806 \u29983 \u20102 \u12290 \\n\u21191 \u25954 \u30340 \u23567 \u28192 \u65292 \u20320 \u26159 \u25105 \u21191 \u25954 \u30340 \u29702 \u30001 \u12290 ']\},\
+  \{c:'#EA580C',lc:'#fdba74',fl:'\uc0\u27225 \u33394 \u37057 \u37329 \u39321 ',t:'\u27225 ',s:'\u30693 \u36947 \u26159 \u20026 \u21738 \u22363 \u37259 \u21253 \u30340 \u39290 \u23376 \u20102 \u19981 ',ph:['\u55357 \u56561  \u27225 \u19978 \u32842 \u22825 \u25130 \u22270 ','\u55356 \u57093  \u20621 \u26202 \u27225 \u33394 \u22825 \u31354 '],\
+   b:['\uc0\u23453 \u23376 \u25105 \u25972 \u36825 \u20040 \u19968 \u20986 \u20320 \u26159 \u19981 \u26159 \u21040 \u27515 \u37117 \u20250 \u35760 \u24471 \u25105 \u20204 \u26159 \u27225 \u19978 \u35748 \u35782 \u30340 \u20102 ^ ^\\n\u37027 \u26679 \u30495 \u30340 \u22826 \u22909 \u20102 \u12290 \\n\u24863 \u35874 \u27225 \u21483 \u27225 \u12290 ','\u22240 \u20026 \u27225 \u33394 \u26080 \u22788 \u19981 \u22312 \u65292 \u36229 \u24066 \u37324 \u28145 \u28145 \u27973 \u27973 \u30340 \u27700 \u26524 \u12289 \u33457 \u24215 \u37324 \u26434 \u20132 \u32321 \u32946 \u24418 \u24577 \u21508 \u24322 \u30340 \u33457 \u26421 \u12289 \u20621 \u26202 \u26102 \u28201 \u28909 \u30340 \u22826 \u38451 \u21644 \u22825 \u31354 ......\u25105 \u35201 \u20851 \u20110 \u25105 \u30340 \u21360 \u35937 \u20687 \u19968 \u31181 \u39068 \u33394 \u12289 \u19968 \u31181 \u38543 \u22788 \u21487 \u35265 \u30340 \u30149 \u27602 \u65292 \u26893 \u20837 \u20320 \u21448 \u22823 \u21448 \u28418 \u20142 \u30340 \u33041 \u23376 \u37324 \u12290 ','\u22312 \u27225 \u19978 \u21047 \u21040 \u20320 \u30340 \u26102 \u20505 \u65292 \u30830 \u23454 \u26159 \u22240 \u20026 \u26080 \u27861 \u24573 \u35270 \u23398 \u21382 \u20809 \u29615 \u28857 \u20102 \u32418 \u24515 \u12290 \u20294 \u22914 \u26524 \u35828 \u20165 \u26377 \u23398 \u21382 \u65292 \u36798 \u19981 \u21040 \u25105 \u23545 \u22823 \u33041 \u30340 \u23457 \u32654 \u12290 \\n\u19968 \u39063 \u28418 \u20142 \u30340 \u33041 \u23376 \u65292 \u38500 \u20102 \u20855 \u22791 \u20013 \u19978 \u30340 \u26234 \u21147 \u65292 \u36824 \u24212 \u35813 \u26377 \u38543 \u26102 \u20934 \u22791 \u29702 \u35299 \u20219 \u20309 \u20154 \u65292 \u20174 \u20219 \u20309 \u20154 \u36523 \u19978 \u23398 \u21040 \u19996 \u35199 \u30340 \u35878 \u21644 \u65292 \u23485 \u20110 \u24453 \u20154 \u65292 \u20005 \u20110 \u24459 \u24049 \u12290 ','\u26368 \u21518 \u24819 \u35828 \u65292 \u33021 \u21305 \u37197 \u21040 \u20320 \u65292 \u35874 \u35874 \u20320 \u30340 \u21335 \u22823 \u65292 \u35874 \u35874 \u25105 \u30340 \u37266 \u22270 \u65292 \u35874 \u35874 \u27225 \u65292 \u35874 \u35874 \u20320 \u65292 \u35874 \u35874 \u21629 \u36816 \u12290 ']\},\
+  \{c:'#D97706',lc:'#fde68a',fl:'\uc0\u21521 \u26085 \u33909 ',t:'\u40644 ',s:'\u39134 \u40644 \u33150 \u36798 \u65292 \u20854 \u20182 \u19981 \u33021 \u25773 \u20102 ',ph:['\u55356 \u57325  \u40644 \u28548 \u28548 \u30340 \u21378 \u25151 \u28783 ','\u55357 \u56972  \u33311 \u23665 \u21040 \u23425 \u27874 \u22823 \u24052 '],\
+   b:['\uc0\u19981 \u36807 \u26412 \u32593 \u31449 \u19981 \u20844 \u24320 \u21704 \u65292 \u23601 \u32842 \u19981 \u33021 \u25773 \u30340 \u65281 ','\u21016 \u24072 \u20613 \u19994 \u20313 \u21916 \u27426 \u30475 \u28857 \u31934 \u31070 \u20998 \u26512 \u65292 \u20063 \u21916 \u27426 \u31934 \u31070 \u20998 \u26512 \u21035 \u20154 \u12290 \u20973 \u32463 \u39564 \u32780 \u35328 \u65292 Xp\u19978 \u33021 \u30475 \u20986 \u19968 \u20010 \u20154 \u30340 \u24213 \u33394 \u12290 ','\u22240 \u20026 \u32477 \u23545 \u30340 \u25511 \u21046 \u24448 \u24448 \u35201 \u27714 \u32477 \u23545 \u30340 \u24773 \u32490 \u31283 \u23450 \u65292 \u20294 \u24378 \u28872 \u30340 \u24773 \u32490 \u26412 \u36523 \u23601 \u26159 \u19968 \u31181 \u38590 \u20197 \u25484 \u25511 \u30340 \u21464 \u37327 \u12290 \u20320 \u20064 \u24815 \u24615 \u22320 \u21387 \u25233 \u33258 \u24049 \u30340 \u20381 \u36182 \u21644 \u28145 \u24773 \u65292 \u22240 \u20026 \u27969 \u38706 \u36825 \u20123 \u24773 \u24863 \u24847 \u21619 \u30528 \u23558 \u20260 \u23475 \u33258 \u24049 \u30340 \u26435 \u21147 \u20132 \u32473 \u20102 \u25105 \u12290 ','\u36824 \u22909 \u25105 \u20204 \u37117 \u24895 \u24847 \u20026 \u20102 \u23545 \u26041 \u36827 \u19968 \u27493 \u22320 \u34962 \u38706 \u33258 \u24049 \u12290 \\n\\n\u20174 \u33311 \u23665 \u21435 \u23425 \u27874 \u21335 \u31449 \u30340 \u22823 \u24052 \u34892 \u33267 \u26202 \u19978 \u20845 \u19971 \u28857 \u65292 \u21608 \u36793 \u21378 \u25151 \u40784 \u40784 \u20142 \u36215 \u40644 \u28548 \u28548 \u30340 \u28783 \u65292 \u20320 \u25289 \u20303 \u25105 \u30340 \u25163 \u36145 \u21974 \u21974 \u35828 \u65306 \\n"\u37325 \u35201 \u30340 \u26159 \u35299 \u26500 \u21040 \u26368 \u21518 \u65292 \u30041 \u19979 \u26469 \u30340 \u20154 \u26368 \u29645 \u36149 \u12290 \u26159 \u21543 \u23453 \u23453 \u65311 "']\},\
+  \{c:'#16A34A',lc:'#86efac',fl:'\uc0\u32511 \u33394 \u27915 \u26708 \u26775 ',t:'\u32511 ',s:'\u27714 \u27714 \u20320 \u19981 \u35201 \u32511 \u25105 \u65288 bushi',ph:['\u55357 \u56534  \u33678 \u33433 \u30340 \u35799 \u38598 ','\u55357 \u56474  \u20320 \u20204 \u30340 \u26085 \u24120 \u21512 \u29031 '],\
+   b:['\uc0\u32511 \u33394 \u30830 \u23454 \u26159 \u23241 \u22930 \u30340 \u39068 \u33394 \u12290 ','\u21476 \u24076 \u33098 \u20154 \u35748 \u20026 \u65292 \u23241 \u22930 \u20250 \u23548 \u33268 \u20307 \u20869 \u40644 \u33394 \u32966 \u27713 \u36807 \u24230 \u20998 \u27852 \u65292 \u20351 \u20154 \u33080 \u33394 \u21457 \u32511 \u12290 ','\u21892 \u22930 \u30340 \u20154 \u33021 \u22815 \u29702 \u35299 \u65292 \u26102 \u24120 \u36827 \u20837 \u24773 \u24863 \u19978 \u30340 \u28626 \u27515 \u20307 \u39564 \u26159 \u20160 \u20040 \u24863 \u35273 \u12290 \u23241 \u22930 \u24102 \u26469 \u21162 \u21147 \u65292 \u20294 \u20182 \u20154 \u30524 \u20013 \u30340 \u21162 \u21147 \u21487 \u33021 \u21482 \u26159 \u19968 \u31181 \u19981 \u24819 \u28346 \u27515 \u30340 \u25379 \u25166 \u12290 ','\u25105 \u21487 \u20197 \u35745 \u21010 \u21464 \u24471 \u26356 \u28418 \u20142 \u65292 \u35745 \u21010 \u21464 \u24471 \u26356 \u21191 \u25954 \u65292 \u20294 \u26159 \u25105 \u26080 \u27861 \u35745 \u21010 \u21040 \u20154 \u24515 \u20013 \u30636 \u24687 \u19975 \u21464 \u30340 \u24863 \u35273 \u12290 \\n\u24863 \u24773 \u30340 \u20107 \u26242 \u26102 \u38590 \u20197 \u24471 \u21040 \u31572 \u26696 \u65292 \u25152 \u20197 \u20320 \u21487 \u20197 \u36172 \u12290 ','\u30475 \u20320 \u21193 \u24378 \u20063 \u19981 \u24555 \u20048 \u12290 \u22914 \u26524 \u20320 \u19968 \u23450 \u35201 \u21435 \u65292 \u25552 \u21069 \u36890 \u30693 \u25105 \u65292 \u19981 \u35201 \u39575 \u25105 \u12290 ']\},\
+  \{c:'#0891B2',lc:'#a5f3fc',fl:'\uc0\u32483 \u29699 \u33457 ',t:'\u38738 ',s:'\u20171 \u20110 \u32511 \u19982 \u34013 \u20043 \u38388 \u30340 \u38738 \u28073 ',ph:['\u9749  \u21654 \u21857 \u39302 \u30340 \u29031 \u29255 ','\u9968 \u65039  \u26222 \u38464 \u23665 \u23546 \u24217 '],\
+   b:['\uc0\u20108 \u21313 \u20108 \u23681 \u25105 \u25658 \u25105 \u25152 \u26377 \u24180 \u38738 \u30340 \u33258 \u21329 \u19982 \u33258 \u20658 \u65292 \u31449 \u22312 \u26032 \u30340 \u40857 \u38376 \u21069 \u65292 \u24820 \u24820 \u19981 \u23433 \u12290 ','\u25226 \u25152 \u26377 \u30340 \u24895 \u26223 \u30041 \u22312 \u26222 \u38464 \u23665 \u26368 \u39640 \u30340 \u23546 \u24217 \u19978 \u65292 \u19979 \u23665 \u20043 \u21518 \u21435 \u20934 \u22791 \u26399 \u26411 \u32771 \u65292 \u21046 \u20316 \u20316 \u21697 \u38598 \u65292 \u25237 \u31616 \u21382 \u12290 \\n\u20294 \u23436 \u32654 \u26159 \u34394 \u31354 \u20013 \u30340 \u12290 \\n\u37027 \u20010 \u25226 \u25105 \u20174 \u34394 \u31354 \u20013 \u31283 \u31283 \u25265 \u19979 \u26469 \u30340 \u20154 \u26159 \u20320 \u12290 ','\u25105 \u27704 \u36828 \u20250 \u35760 \u24471 \u22312 \u21654 \u21857 \u39302 \u23616 \u20419 \u19981 \u23433 \u22320 \u25509 \u23436 \u30005 \u35805 \u65292 \u20197 \u20026 \u33258 \u24049 \u23601 \u20540 \u20116 \u21313 \u22359 \u30340 \u26102 \u20505 \u65292 \u20320 \u35821 \u27668 \u22840 \u24352 \u22320 \u34920 \u31034 \u38663 \u24778 \u65292 \u30475 \u25105 \u30340 \u26679 \u23376 \u23601 \u20687 \u30475 \u35201 \u33258 \u25105 \u25918 \u24323 \u30340 \u19979 \u19968 \u20010 papi\u37233 \u12290 ','\u26080 \u20241 \u27490 \u30340 \u33258 \u25105 \u25209 \u21028 \u20013 \u38388 \u65292 \u26159 \u20320 \u25176 \u20303 \u25105 \u12290 \\n\\nHR\u38382 \u25105 \u65292 \u26159 \u20160 \u20040 \u28857 \u29123 \u20320 \u20570 \u20869 \u23481 \u30340 \u28909 \u24773 \u65311 \u20110 \u26159 \u25105 \u32456 \u20110 \u24635 \u32467 \u36947 \u65306 \\n"\u37027 \u24212 \u35813 \u26159 \u19968 \u31181 \u25176 \u20030 \u24863 \u12290 "']\},\
+  \{c:'#2563EB',lc:'#93c5fd',fl:'\uc0\u21247 \u24536 \u25105 ',t:'\u34013 ',s:'\u30524 \u27882 ',ph:['\u55356 \u57098  \u28023 \u36793 \u30340 \u29031 \u29255 ','\u10024  \u34013 \u30524 \u27882 \u39118 \u26223 '],\
+   b:['\uc0\u34013 \u30524 \u27882 \u26159 \u28014 \u28216 \u29983 \u29289 \u21463 \u28023 \u28010 \u25200 \u21160 \u32780 \u21457 \u20986 \u30340 \u24189 \u34013 \u33639 \u20809 \u65292 \u33030 \u24369 \u12289 \u32654 \u20029 \u12289 \u21487 \u36935 \u19981 \u21487 \u27714 \u12290 ','\u26377 \u26426 \u20250 \u25105 \u24819 \u21644 \u20320 \u21435 \u30475 \u65292 \u20294 \u20320 \u29983 \u27963 \u22312 \u28023 \u36793 \u65292 \u26159 \u19981 \u26159 \u26089 \u23601 \u30475 \u36807 \u20102 \u65311 \u30475 \u36807 \u20063 \u38506 \u25105 \u20877 \u30475 \u19968 \u27425 \u22909 \u19981 \u12290 \\n\u25105 \u24819 \u21644 \u31232 \u26377 \u30340 \u20154 \u30475 \u19968 \u31181 \u31232 \u26377 \u30340 \u26223 \u33394 \u12290 ','\u20320 \u32463 \u24120 \u35828 \u20320 \u20687 \u25105 \u21916 \u27426 \u36807 \u30340 \u20154 \u30340 \u38598 \u21512 \u65292 \u20320 \u35828 \u25105 \u36186 \u39134 \u20102 \u12290 \u20294 \u23454 \u38469 \u19978 \u65292 \u25105 \u35748 \u20026 \u20320 \u29645 \u36149 \u19981 \u26159 \u22240 \u20026 \u20320 \u20687 \u20219 \u20309 \u20154 \u32780 \u29645 \u36149 \u65292 \u20165 \u20165 \u22240 \u20026 \u20320 \u26159 \u20320 \u12290 ']\},\
+  \{c:'#7C3AED',lc:'#c4b5fd',fl:'\uc0\u32043 \u33394 \u40482 \u23614 \u33457 ',t:'\u32043 ',s:'\u19968 \u26679 \u28145 \u36995 \u30340 \u20320 ',ph:['\u55356 \u57269  \u32593 \u26131 \u20113 \u27979 \u35797 \u25130 \u22270 ','\u55356 \u57257  \u32043 \u33394 \u27675 \u22260 \u21512 \u29031 '],\
+   b:['\uc0\u32593 \u26131 \u20113 \u27599 \u27425 \u27979 \u35797 \u27963 \u21160 \u30340 \u23457 \u32654 \u37117 \u24456 \u22909 \u65292 \u21363 \u20351 \u26159 \u24052 \u32435 \u22982 \u25928 \u24212 \u20063 \u35753 \u20154 \u21360 \u35937 \u28145 \u21051 \u12290 \\n\u20294 \u20320 \u32473 \u25105 \u30041 \u19979 \u32043 \u33394 \u30340 \u21360 \u35937 \u21487 \u33021 \u36824 \u22240 \u20026 \u32043 \u33394 \u26159 \u39764 \u26415 \u24072 \u30340 \u39068 \u33394 \u12290 ','\u20250 \u21464 \u39764 \u26415 \u30340 \u20154 \u26159 \u23500 \u26377 \u39749 \u21147 \u30340 \u12290 \\n\u36825 \u31181 \u39749 \u21147 \u21487 \u33021 \u26469 \u28304 \u20110 \u65292 \u33510 \u24605 \u19968 \u20010 \u21576 \u29616 \u26041 \u24335 \u20960 \u20010 \u26376 \u65292 \u32451 \u20064 \u19968 \u20010 \u25216 \u27861 \u20960 \u21313 \u36941 \u65292 \u21482 \u26159 \u20026 \u20102 \u21576 \u29616 \u32473 \u35266 \u20247 \u30636 \u38388 \u30340 \u24778 \u21916 \u12290 ','\u21476 \u20154 \u20113 \u65292 \u26045 \u27604 \u21463 \u26356 \u26377 \u31119 \u12290 \u37027 \u39764 \u26415 \u19981 \u26159 \u26045 \u30340 \u33402 \u26415 \u30340 \u26497 \u33268 \u21527 \u12290 \\n\u20320 \u32473 \u25105 \u21464 \u20102 \u29233 \u30340 \u39764 \u26415 \u65292 \u25105 \u21487 \u20197 \u23601 \u20572 \u22312 \u36825 \u37324 \u65292 \u21482 \u26159 \u20139 \u21463 \u20320 \u30340 \u22909 \u12290 \u20294 \u25105 \u19981 \u20165 \u22909 \u22855 \u65292 \u36824 \u24819 \u23398 \u20064 \u65292 \u24819 \u21019 \u26032 \u12290 ']\}\
+];\
+\
+const POS=[\{x:95,y:55\},\{x:140,y:35\},\{x:185,y:48\},\{x:225,y:28\},\{x:265,y:45\},\{x:305,y:32\},\{x:345,y:52\}];\
+const SX=[170,175,185,210,235,240,235];\
+\
+function shuffle(a)\{const r=[...a];for(let i=r.length-1;i>0;i--)\{const j=0|Math.random()*(i+1);[r[i],r[j]]=[r[j],r[i]];\}return r;\}\
+\
+function Flower(\{i,cx,cy,color,active,done,onClick\})\{\
+  const o=active?1:done?0.65:0.85;\
+  const sc=active?1.15:1;\
+  const gl=active?`drop-shadow(0 0 10px $\{color\})`:done?`drop-shadow(0 0 4px $\{color\}50)`:'none';\
+  const sty=\{cursor:'pointer',transformOrigin:`$\{cx\}px $\{cy\}px`,transform:`scale($\{sc\})`,transition:'all 0.35s',filter:gl\};\
+  const shapes=[\
+    ()=>React.createElement('g',\{onClick,style:sty\},\
+      [0,51,102,153,204,255,306].map(a=>React.createElement('ellipse',\{key:a,cx,cy,rx:5,ry:11,fill:color,opacity:o*0.8,transform:`rotate($\{a\} $\{cx\} $\{cy\}) translate(0,-4)`\})),\
+      React.createElement('circle',\{cx,cy,r:5.5,fill:color,opacity:o*0.6\}),\
+      done&&React.createElement('text',\{x:cx,y:cy+4,textAnchor:'middle',fontSize:8,fill:'#fff'\},'\uc0\u10003 ')),\
+    ()=>React.createElement('g',\{onClick,style:sty\},\
+      React.createElement('ellipse',\{cx:cx-6,cy:cy+2,rx:7,ry:14,fill:color,opacity:o*0.85\}),\
+      React.createElement('ellipse',\{cx:cx+6,cy:cy+2,rx:7,ry:14,fill:color,opacity:o*0.85\}),\
+      React.createElement('ellipse',\{cx,cy,rx:6,ry:13,fill:color,opacity:o\}),\
+      done&&React.createElement('text',\{x:cx,y:cy+4,textAnchor:'middle',fontSize:8,fill:'#fff'\},'\uc0\u10003 ')),\
+    ()=>React.createElement('g',\{onClick,style:sty\},\
+      [0,30,60,90,120,150,180,210,240,270,300,330].map(a=>React.createElement('ellipse',\{key:a,cx,cy:cy-10,rx:3.5,ry:9,fill:color,opacity:o*0.9,transform:`rotate($\{a\} $\{cx\} $\{cy\})`\})),\
+      React.createElement('circle',\{cx,cy,r:7,fill:'#92400e',opacity:o\}),\
+      done&&React.createElement('text',\{x:cx,y:cy+4,textAnchor:'middle',fontSize:8,fill:'#fff'\},'\uc0\u10003 ')),\
+    ()=>React.createElement('g',\{onClick,style:sty\},\
+      [0,72,144,216,288].map(a=>React.createElement('ellipse',\{key:a,cx,cy:cy-8,rx:7,ry:12,fill:color,opacity:o*0.7,transform:`rotate($\{a\} $\{cx\} $\{cy\})`\})),\
+      done&&React.createElement('text',\{x:cx,y:cy+4,textAnchor:'middle',fontSize:8,fill:'#fff'\},'\uc0\u10003 ')),\
+    ()=>React.createElement('g',\{onClick,style:sty\},\
+      [[-6,-8],[6,-8],[0,-14],[-9,0],[9,0],[-5,-2],[5,-2],[0,-6],[-3,4],[3,4]].map(([dx,dy],j)=>React.createElement('circle',\{key:j,cx:cx+dx,cy:cy+dy,r:4,fill:color,opacity:o*0.7\})),\
+      done&&React.createElement('text',\{x:cx,y:cy+4,textAnchor:'middle',fontSize:8,fill:'#fff'\},'\uc0\u10003 ')),\
+    ()=>React.createElement('g',\{onClick,style:sty\},\
+      [[0,-8],[8,-2],[-8,-2],[5,5],[-5,5]].map(([dx,dy],j)=>React.createElement('circle',\{key:j,cx:cx+dx,cy:cy+dy,r:5,fill:color,opacity:o*0.8\})),\
+      [[0,-8],[8,-2],[-8,-2]].map(([dx,dy],j)=>React.createElement('circle',\{key:'c'+j,cx:cx+dx,cy:cy+dy,r:1.8,fill:'#fbbf24',opacity:o\})),\
+      done&&React.createElement('text',\{x:cx,y:cy+10,textAnchor:'middle',fontSize:8,fill:'#fff'\},'\uc0\u10003 ')),\
+    ()=>React.createElement('g',\{onClick,style:sty\},\
+      [0,120,240].map(a=>React.createElement('ellipse',\{key:a,cx,cy:cy-10,rx:4,ry:14,fill:color,opacity:o*0.85,transform:`rotate($\{a\} $\{cx\} $\{cy\})`\})),\
+      [60,180,300].map(a=>React.createElement('ellipse',\{key:'d'+a,cx,cy:cy+8,rx:5,ry:10,fill:color,opacity:o*0.6,transform:`rotate($\{a\} $\{cx\} $\{cy\})`\})),\
+      done&&React.createElement('text',\{x:cx,y:cy+4,textAnchor:'middle',fontSize:8,fill:'#fff'\},'\uc0\u10003 '))\
+  ];\
+  return shapes[i]();\
+\}\
+\
+export default function App()\{\
+  const [sel,setSel]=useState(null);\
+  const [pool]=useState(()=>\{\
+    const a=[];\
+    D.forEach((f,fi)=>f.ph.forEach((p,si)=>a.push(\{id:`$\{fi\}-$\{si\}`,fi,si,label:p\})));\
+    return shuffle(a);\
+  \});\
+  const [matched,setMatched]=useState(()=>D.map(()=>[false,false]));\
+  const [used,setUsed]=useState(\{\});\
+  const [revealed,setRevealed]=useState(()=>D.map(()=>false));\
+  const [showBody,setShowBody]=useState(false);\
+  const [wrongSlot,setWrongSlot]=useState(null);\
+  const [shakeId,setShakeId]=useState(null);\
+  const [celeb,setCeleb]=useState(false);\
+  const [dragItem,setDragItem]=useState(null);\
+  const [slotPhotos,setSlotPhotos]=useState(\{\});\
+  const ref0=useRef(null);\
+  const ref1=useRef(null);\
+\
+  const f=sel!==null?D[sel]:null;\
+  const cm=sel!==null?matched[sel]:[false,false];\
+  const done=sel!==null&&revealed[sel];\
+  const allDone=revealed.every(Boolean);\
+  const prog=revealed.filter(Boolean).length;\
+\
+  const pick=useCallback(i=>\{\
+    if(i===sel)return;\
+    setShowBody(false);\
+    setSel(i);\
+    if(revealed[i])setTimeout(()=>setShowBody(true),100);\
+  \},[sel,revealed]);\
+\
+  const tryDrop=(photo,slotIdx)=>\{\
+    if(sel===null)return;\
+    if(photo.fi===sel)\{\
+      // Correct flower \'97 place in this slot regardless of photo order\
+      const nm=matched.map((m,i)=>i===sel?[slotIdx===0?true:m[0],slotIdx===1?true:m[1]]:[...m]);\
+      setMatched(nm);\
+      setUsed(u=>(\{...u,[photo.id]:true\}));\
+      // Store which photo landed in which slot for display\
+      setSlotPhotos(sp=>\{const n=\{...sp\};n[`$\{sel\}-$\{slotIdx\}`]=photo;return n;\});\
+      if(nm[sel][0]&&nm[sel][1])\{\
+        setCeleb(true);\
+        setTimeout(()=>\{\
+          setRevealed(r=>r.map((v,i)=>i===sel?true:v));\
+          setShowBody(true);\
+          setCeleb(false);\
+        \},700);\
+      \}\
+    \}else\{\
+      setWrongSlot(slotIdx);\
+      setShakeId(photo.id);\
+      setTimeout(()=>\{setWrongSlot(null);setShakeId(null);\},500);\
+    \}\
+    setDragItem(null);\
+  \};\
+\
+  const css=`\
+    @keyframes tw\{0%,100%\{opacity:.15\}50%\{opacity:.7\}\}\
+    @keyframes fl\{0%,100%\{transform:translateY(0)\}50%\{transform:translateY(-5px)\}\}\
+    @keyframes fi\{from\{opacity:0;transform:translateY(8px)\}to\{opacity:1;transform:translateY(0)\}\}\
+    @keyframes sx\{0%,100%\{transform:translateX(0)\}25%,75%\{transform:translateX(-5px)\}50%\{transform:translateX(5px)\}\}\
+    @keyframes cb\{0%\{transform:scale(1)\}40%\{transform:scale(1.03)\}100%\{transform:scale(1)\}\}\
+    @keyframes dp\{0%,100%\{opacity:.4\}50%\{opacity:.8\}\}\
+    ::-webkit-scrollbar\{width:5px\}::-webkit-scrollbar-thumb\{background:rgba(0,0,0,.1);border-radius:3px\}\
+  `;\
+\
+  return React.createElement('div',\{style:\{minHeight:'100vh',background:'linear-gradient(180deg,#0c0518,#1a0a2e 30%,#0f172a)',display:'flex',flexDirection:'column',alignItems:'center',padding:'16px 10px 40px',fontFamily:'"Noto Serif SC",Georgia,serif'\}\},\
+    React.createElement('style',null,css),\
+\
+    // Stars\
+    React.createElement('div',\{style:\{position:'fixed',inset:0,pointerEvents:'none'\}\},\
+      Array.from(\{length:30\},(_,i)=>React.createElement('div',\{key:i,style:\{position:'absolute',width:2,height:2,borderRadius:'50%',background:'#fff',opacity:.12+Math.random()*.3,left:Math.random()*100+'%',top:Math.random()*50+'%',animation:`tw $\{2+Math.random()*3\}s ease-in-out infinite`,animationDelay:Math.random()*3+'s'\}\}))),\
+\
+    // Title\
+    React.createElement('div',\{style:\{textAlign:'center',marginBottom:8,zIndex:1,position:'relative'\}\},\
+      React.createElement('h1',\{style:\{fontSize:24,fontWeight:400,margin:0,letterSpacing:3,background:'linear-gradient(135deg,#f5d0a0,#e8b4b8,#d4a0d0)',WebkitBackgroundClip:'text',WebkitTextFillColor:'transparent'\}\},'\uc0\u24425 \u34425 \u33457 \u20070 '),\
+      React.createElement('div',\{style:\{fontSize:11,color:'rgba(255,255,255,.4)',marginTop:4\}\},`\uc0\u25214 \u21040 \u23646 \u20110 \u27599 \u26421 \u33457 \u30340 \u35760 \u24518  \'b7 $\{prog\}/7`),\
+      React.createElement('div',\{style:\{display:'flex',gap:4,justifyContent:'center',marginTop:6\}\},\
+        D.map((_,i)=>React.createElement('div',\{key:i,style:\{width:revealed[i]?16:8,height:4,borderRadius:2,background:revealed[i]?D[i].c:'rgba(255,255,255,.12)',transition:'all .5s'\}\})))),\
+\
+    // Vase\
+    React.createElement('div',\{style:\{width:'100%',maxWidth:460,zIndex:1,position:'relative',animation:'fl 6s ease-in-out infinite'\}\},\
+      React.createElement('svg',\{viewBox:'60 10 320 260',style:\{width:'100%',display:'block'\}\},\
+        POS.map((p,i)=>React.createElement('path',\{key:i,d:`M200,210 Q$\{SX[i]\},$\{(p.y+235)/2\} $\{p.x\},$\{p.y+25\}`,stroke:'#3a7d44',strokeWidth:2.2,fill:'none',opacity:.7\})),\
+        React.createElement('path',\{d:'M165,210 L158,248 Q158,265 200,265 Q242,265 242,248 L235,210 Z',fill:'#c49060',stroke:'#a0764e',strokeWidth:1\}),\
+        React.createElement('ellipse',\{cx:200,cy:210,rx:37,ry:7,fill:'#ddb896',stroke:'#a0764e',strokeWidth:.8\}),\
+        POS.map((p,i)=>React.createElement(Flower,\{key:i,i,cx:p.x,cy:p.y,color:D[i].c,active:sel===i,done:revealed[i],onClick:()=>pick(i)\}))),\
+      React.createElement('div',\{style:\{textAlign:'center',fontSize:10,color:'#a08060',opacity:.5,marginTop:-4\}\},'\uc0\u8593  \u28857 \u33457 \u26421 \u65292 \u25302 \u29031 \u29255 \u21040 \u20070 \u37324  \u8593 ')),\
+\
+    // Book\
+    React.createElement('div',\{style:\{width:'100%',maxWidth:500,marginTop:14,zIndex:1,position:'relative',background:'linear-gradient(135deg,#fdf6e8,#fef9f0 40%,#fdf6e8)',borderRadius:'4px 10px 10px 4px',boxShadow:'-4px 0 0 #d4c4a8,-6px 0 0 #c4b498,-8px 0 0 #b4a488,0 4px 16px rgba(0,0,0,.35)',minHeight:sel===null?180:done?340:210,overflow:'hidden',transition:'min-height .4s',animation:celeb?'cb .7s':'none'\}\},\
+      React.createElement('div',\{style:\{position:'absolute',left:0,top:0,bottom:0,width:10,background:'linear-gradient(90deg,#c4a878,#d4b888,#c4a878)',borderRight:'1px solid #b49868'\}\}),\
+      React.createElement('div',\{style:\{padding:'22px 20px 22px 28px'\}\},\
+        sel===null?\
+          React.createElement('div',\{style:\{textAlign:'center',padding:'28px 0'\}\},\
+            React.createElement('div',\{style:\{fontSize:28,fontWeight:300,background:'linear-gradient(135deg,#DC2626,#EA580C,#D97706,#16A34A,#0891B2,#2563EB,#7C3AED)',WebkitBackgroundClip:'text',WebkitTextFillColor:'transparent'\}\},'\uc0\u19971 \u23553 \u20449 '),\
+            React.createElement('div',\{style:\{fontSize:13,color:'#8a7a6a',lineHeight:2,marginTop:8\}\},'\uc0\u28857 \u20987 \u33457 \u26421 \u65292 \u25302 \u20837 \u27491 \u30830 \u30340 \u29031 \u29255 ',React.createElement('br'),'\u35299 \u38145 \u23646 \u20110 \u37027 \u20010 \u39068 \u33394 \u30340 \u20449 '),\
+            React.createElement('div',\{style:\{marginTop:14,fontSize:11,color:'#b0a090'\}\},'\'97 \uc0\u20320 \u30340 \u40060  \'97'))\
+        :!done?\
+          React.createElement('div',\{style:\{animation:'fi .4s'\}\},\
+            React.createElement('div',\{style:\{display:'flex',alignItems:'center',gap:10,marginBottom:14\}\},\
+              React.createElement('div',\{style:\{width:34,height:34,borderRadius:'50%',background:f.c,display:'flex',alignItems:'center',justifyContent:'center',fontSize:17,color:'#fff'\}\},f.t),\
+              React.createElement('div',null,\
+                React.createElement('div',\{style:\{fontSize:15,color:'#4a3a2a'\}\},f.s),\
+                React.createElement('div',\{style:\{fontSize:10,color:'#a09080'\}\},f.fl))),\
+            React.createElement('div',\{style:\{fontSize:12,color:'#8a7a6a',textAlign:'center',marginBottom:12\}\},'\uc0\u25226 \u36825 \u26421 \u33457 \u30340 \u20004 \u24352 \u35760 \u24518 \u25302 \u21040 \u19979 \u26041  \u8595 '),\
+            React.createElement('div',\{style:\{display:'flex',gap:10,justifyContent:'center'\}\},\
+              [0,1].map(si=>React.createElement('div',\{\
+                key:si,ref:si===0?ref0:ref1,\
+                onDragOver:e=>\{e.preventDefault();e.dataTransfer.dropEffect='move';\},\
+                onDrop:e=>\{e.preventDefault();if(dragItem)tryDrop(dragItem,si);\},\
+                style:\{width:'44%',height:90,borderRadius:8,\
+                  border:cm[si]?`2px solid $\{f.c\}`:wrongSlot===si?'2px solid #ef4444':'2px dashed rgba(0,0,0,.15)',\
+                  background:cm[si]?f.c+'12':'rgba(0,0,0,.02)',display:'flex',alignItems:'center',justifyContent:'center',\
+                  transition:'all .3s',animation:wrongSlot===si?'sx .4s':'none'\}\},\
+                cm[si]?\
+                  React.createElement('div',\{style:\{textAlign:'center'\}\},\
+                    React.createElement('div',\{style:\{fontSize:22\}\},(slotPhotos[`$\{sel\}-$\{si\}`]||\{label:''\}).label.split(' ')[0]),\
+                    React.createElement('div',\{style:\{fontSize:10,color:f.c,marginTop:3\}\},'\uc0\u10003  \u21305 \u37197 \u25104 \u21151 '))\
+                  :React.createElement('div',\{style:\{fontSize:11,color:'#bbb',textAlign:'center'\}\},'\uc0\u29031 \u29255  '+(si+1),React.createElement('br'),\
+                    React.createElement('span',\{style:\{fontSize:9,opacity:.6\}\},'\uc0\u25302 \u21040 \u36825 \u37324 '))))))\
+        :\
+          React.createElement('div',\{style:\{animation:'fi .6s',maxHeight:380,overflowY:'auto'\}\},\
+            React.createElement('div',\{style:\{display:'flex',alignItems:'center',gap:10,marginBottom:14,paddingBottom:10,borderBottom:`1px solid $\{f.lc\}`\}\},\
+              React.createElement('div',\{style:\{width:34,height:34,borderRadius:'50%',background:f.c,display:'flex',alignItems:'center',justifyContent:'center',fontSize:17,color:'#fff'\}\},f.t),\
+              React.createElement('div',null,\
+                React.createElement('div',\{style:\{fontSize:15,color:'#4a3a2a'\}\},f.s),\
+                React.createElement('div',\{style:\{fontSize:10,color:'#a09080'\}\},f.fl))),\
+            React.createElement('div',\{style:\{display:'flex',gap:8,marginBottom:14\}\},\
+              f.ph.map((p,i)=>React.createElement('div',\{key:i,style:\{flex:1,height:60,borderRadius:6,background:f.c+'15',border:`1px solid $\{f.c\}30`,display:'flex',alignItems:'center',justifyContent:'center',fontSize:11,color:f.c\}\},p))),\
+            showBody&&React.createElement('div',\{style:\{fontSize:14,color:'#4a3a2a',lineHeight:2.1\}\},\
+              f.b.map((p,i)=>React.createElement('p',\{key:i,style:\{margin:'0 0 14px',whiteSpace:'pre-wrap',animation:`fi $\{.4+i*.12\}s ease both`\}\},p))),\
+            React.createElement('div',\{style:\{marginTop:14,paddingTop:10,borderTop:`1px solid $\{f.lc\}`,display:'flex',justifyContent:'space-between',alignItems:'center'\}\},\
+              React.createElement('div',\{style:\{display:'flex',gap:4\}\},\
+                D.map((_,i)=>React.createElement('div',\{key:i,onClick:()=>pick(i),style:\{width:sel===i?9:5,height:sel===i?9:5,borderRadius:'50%',background:D[i].c,opacity:sel===i?1:revealed[i]?.5:.15,cursor:'pointer',transition:'all .3s'\}\}))),\
+              React.createElement('div',\{style:\{fontSize:10,color:'#b0a090'\}\},(sel+1)+'/7')))\
+      )),\
+\
+    // Photo pool\
+    !allDone&&React.createElement('div',\{style:\{width:'100%',maxWidth:520,marginTop:16,zIndex:1,position:'relative'\}\},\
+      React.createElement('div',\{style:\{fontSize:11,color:'rgba(255,255,255,.3)',textAlign:'center',marginBottom:8\}\},'\uc0\u55357 \u56567  \u35760 \u24518 \u30862 \u29255  \'b7 \u25302 \u21160 \u21040 \u20070 \u20013 '),\
+      React.createElement('div',\{style:\{display:'flex',flexWrap:'wrap',gap:8,justifyContent:'center'\}\},\
+        pool.filter(p=>!used[p.id]).map(p=>\{\
+          const fc=D[p.fi].c;\
+          return React.createElement('div',\{key:p.id,draggable:true,\
+            onDragStart:e=>\{setDragItem(p);e.dataTransfer.effectAllowed='move';try\{e.dataTransfer.setData('text/plain',p.id)\}catch(x)\{\}\},\
+            onDragEnd:()=>setDragItem(null),\
+            style:\{width:105,height:68,borderRadius:8,cursor:'grab',userSelect:'none',\
+              background:`linear-gradient(135deg,$\{fc\}18,$\{fc\}08)`,border:`1.5px solid $\{fc\}40`,\
+              display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',\
+              transition:'all .3s',animation:shakeId===p.id?'sx .5s':'none'\}\},\
+            React.createElement('div',\{style:\{fontSize:20,marginBottom:2\}\},p.label.split(' ')[0]),\
+            React.createElement('div',\{style:\{fontSize:9,color:'rgba(255,255,255,.45)',textAlign:'center',padding:'0 4px'\}\},p.label.split(' ').slice(1).join(' ')));\
+        \}))),\
+\
+    allDone&&React.createElement('div',\{style:\{marginTop:18,textAlign:'center',animation:'fi 1s',zIndex:1,position:'relative'\}\},\
+      React.createElement('div',\{style:\{fontSize:17,background:'linear-gradient(135deg,#f5d0a0,#e8b4b8,#d4a0d0)',WebkitBackgroundClip:'text',WebkitTextFillColor:'transparent'\}\},'\uc0\u55356 \u57225  \u19971 \u23553 \u20449 \u20840 \u37096 \u35299 \u38145 \u65281 '),\
+      React.createElement('div',\{style:\{fontSize:11,color:'rgba(255,255,255,.35)',marginTop:4\}\},'\uc0\u28857 \u20987 \u33457 \u26421 \u21487 \u20197 \u38543 \u26102 \u37325 \u35835 ')),\
+\
+    React.createElement('div',\{style:\{marginTop:20,fontSize:10,color:'rgba(255,255,255,.12)',letterSpacing:3,textAlign:'center',zIndex:1,position:'relative'\}\},'with love \uc0\u9825 ')\
+  );\
+\}}

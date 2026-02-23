@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>鱼在渠的彩色记忆</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{min-height:100vh;overflow-x:hidden}
+body{
+  background:linear-gradient(180deg,#0c0518,#1a0a2e 30%,#0f172a);
+  font-family:'Noto Serif SC',Georgia,'Songti SC',serif;
+  display:flex;flex-direction:column;align-items:center;
+  padding:16px 10px 60px;color:#fff;
+}
+/* Stars */
+.stars{position:fixed;inset:0;pointer-events:none;z-index:0}
+.star{position:absolute;width:2px;height:2px;border-radius:50%;background:#fff;animation:twinkle var(--dur) ease-in-out infinite;animation-delay:var(--delay);opacity:var(--opa)}
+@keyframes twinkle{0%,100%{opacity:.15}50%{opacity:.7}}
+
+/* Title */
+.title-area{text-align:center;margin-bottom:8px;z-index:1;position:relative}
+.title-area h1{
+  font-size:24px;font-weight:400;letter-spacing:3px;
+  background:linear-gradient(135deg,#f5d0a0,#e8b4b8,#d4a0d0);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+.subtitle{font-size:11px;color:rgba(255,255,255,.4);margin-top:4px}
+.progress-bar{display:flex;gap:4px;justify-content:center;margin-top:6px}
+.progress-dot{height:4px;border-radius:2px;transition:all .5s}
+
+/* Vase area */
+.vase-wrap{width:100%;max-width:460px;z-index:1;position:relative;animation:float 6s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+.vase-wrap svg{width:100%;display:block}
+.vase-hint{text-align:center;font-size:10px;color:#a08060;opacity:.5;margin-top:-4px}
+
+/* Flower click */
+.flower-group{cursor:pointer;transition:all .35s}
+.flower-group:hover{filter:brightness(1.2)}
+.flower-group.active{animation:pulse 1s ease-in-out infinite}
+@keyframes pulse{0%,100%{filter:brightness(1)}50%{filter:brightness(1.3)}}
+
+/* Book wrapper */
+.book-scene{
+  width:100%;max-width:500px;margin-top:14px;z-index:1;position:relative;
+}
+/* Book */
+.book{
+  width:100%;position:relative;
+  border-radius:4px 10px 10px 4px;
+  box-shadow:-4px 0 0 #d4c4a8,-6px 0 0 #c4b498,-8px 0 0 #b4a488,0 4px 16px rgba(0,0,0,.35);
+  overflow:hidden;transition:min-height .4s ease;
+}
+/* Cover state */
+.book.is-cover{
+  background:linear-gradient(145deg,#2a1a0e 0%,#3d2817 20%,#4a3020 50%,#3d2817 80%,#2a1a0e 100%);
+  border:1px solid #5a4030;
+}
+.book.is-cover .book-spine{
+  background:linear-gradient(90deg,#1a0e06,#2a1a0e,#1a0e06);
+  border-right:1px solid #4a3525;
+}
+/* Inner page state */
+.book.is-page{
+  background:linear-gradient(135deg,#fdf6e8,#fef9f0 40%,#fdf6e8);
+}
+.book.is-page .book-spine{
+  background:linear-gradient(90deg,#c4a878,#d4b888,#c4a878);
+  border-right:1px solid #b49868;
+}
+.book-spine{position:absolute;left:0;top:0;bottom:0;width:10px;transition:background .5s}
+.book-content{padding:22px 20px 22px 28px;position:relative}
+.book.celebrating{animation:celebrate .7s ease}
+@keyframes celebrate{0%{transform:scale(1)}40%{transform:scale(1.03)}100%{transform:scale(1)}}
+
+
+/* Welcome / Cover page */
+.welcome{padding:32px 10px;position:relative}
+.cover-border{
+  border:1px solid rgba(200,170,120,.35);border-radius:2px;
+  padding:28px 16px;margin:0 auto;max-width:360px;
+  position:relative;
+}
+.cover-border::before,.cover-border::after{
+  content:'';position:absolute;width:30px;height:30px;
+  border-color:rgba(200,170,120,.4);border-style:solid;
+}
+.cover-border::before{top:-3px;left:-3px;border-width:2px 0 0 2px;border-radius:4px 0 0 0}
+.cover-border::after{bottom:-3px;right:-3px;border-width:0 2px 2px 0;border-radius:0 0 4px 0}
+.cover-ornament{
+  text-align:center;font-size:14px;letter-spacing:8px;
+  color:rgba(200,170,120,.3);margin-bottom:16px;
+}
+.welcome-title{
+  font-size:20px;font-weight:400;text-align:center;line-height:1.8;
+  color:#d4b896;letter-spacing:2px;
+}
+.welcome-desc{font-size:12px;color:rgba(200,170,120,.55);line-height:2;margin-top:14px}
+.welcome-sign{margin-top:18px;font-size:11px;color:rgba(200,170,120,.4);text-align:center;letter-spacing:3px}
+.cover-year{text-align:center;font-size:10px;color:rgba(200,170,120,.25);margin-top:12px;letter-spacing:4px}
+
+/* Drop zone page */
+.drop-page{animation:fadeUp .4s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.flower-header{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.flower-icon{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:17px;color:#fff;flex-shrink:0}
+.flower-name{font-size:15px;color:#4a3a2a}
+.flower-type{font-size:10px;color:#a09080}
+.drop-hint{font-size:12px;color:#8a7a6a;text-align:center;margin-bottom:12px}
+.drop-zones{display:flex;gap:10px;justify-content:center}
+.drop-zone{
+  width:44%;height:110px;border-radius:8px;
+  border:2px dashed rgba(0,0,0,.15);
+  background:rgba(0,0,0,.02);
+  display:flex;align-items:center;justify-content:center;
+  transition:all .3s;position:relative;overflow:hidden;
+}
+.drop-zone.matched{border-style:solid}
+.drop-zone.wrong{border-color:#ef4444!important;animation:shake .4s ease}
+.drop-zone.drag-over{background:rgba(0,0,0,.06);border-color:rgba(0,0,0,.3)}
+@keyframes shake{0%,100%{transform:translateX(0)}25%,75%{transform:translateX(-5px)}50%{transform:translateX(5px)}}
+.drop-zone .matched-img{width:100%;height:100%;object-fit:cover;border-radius:6px}
+.drop-zone .matched-check{
+  position:absolute;bottom:4px;right:4px;
+  width:20px;height:20px;border-radius:50%;
+  background:rgba(255,255,255,.9);
+  display:flex;align-items:center;justify-content:center;
+  font-size:12px;
+}
+.drop-placeholder{font-size:11px;color:#bbb;text-align:center;line-height:1.8}
+.drop-placeholder small{font-size:9px;opacity:.6}
+
+/* Letter page */
+.letter-page{animation:fadeUp .6s ease}
+.letter-header{display:flex;align-items:center;gap:10px;margin-bottom:14px;padding-bottom:10px}
+.letter-photos{display:flex;gap:8px;margin-bottom:14px}
+.letter-photo-thumb{
+  flex:1;height:70px;border-radius:6px;overflow:hidden;position:relative;
+}
+.letter-photo-thumb img{width:100%;height:100%;object-fit:cover}
+.letter-photo-thumb .overlay{
+  position:absolute;bottom:0;left:0;right:0;padding:4px 6px;
+  background:linear-gradient(transparent,rgba(0,0,0,.5));
+  font-size:9px;color:rgba(255,255,255,.8);text-align:center;
+}
+.letter-body{font-size:14px;color:#4a3a2a;line-height:2.1}
+.letter-body p{margin:0 0 14px;white-space:pre-wrap}
+.letter-body p:nth-child(1){animation:fadeUp .4s ease both}
+.letter-body p:nth-child(2){animation:fadeUp .52s ease both}
+.letter-body p:nth-child(3){animation:fadeUp .64s ease both}
+.letter-body p:nth-child(4){animation:fadeUp .76s ease both}
+.letter-body p:nth-child(5){animation:fadeUp .88s ease both}
+.letter-body p:nth-child(6){animation:fadeUp 1s ease both}
+.letter-nav{margin-top:14px;padding-top:10px;display:flex;justify-content:space-between;align-items:center}
+.letter-nav-dots{display:flex;gap:4px}
+.letter-nav-dot{border-radius:50%;cursor:pointer;transition:all .3s;border:none;padding:0}
+.letter-nav-page{font-size:10px;color:#b0a090}
+.letter-page .letter-body,
+.letter-page .letter-photos{max-height:400px;overflow-y:auto}
+
+/* Photo pool */
+.photo-pool{width:100%;max-width:520px;margin-top:16px;z-index:1;position:relative}
+.pool-title{font-size:11px;color:rgba(255,255,255,.3);text-align:center;margin-bottom:8px}
+.pool-grid{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.photo-card{
+  width:108px;height:80px;border-radius:8px;cursor:grab;
+  user-select:none;position:relative;overflow:hidden;
+  transition:all .3s;flex-shrink:0;
+}
+.photo-card:active{cursor:grabbing}
+.photo-card img{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none}
+.photo-card .card-overlay{
+  position:absolute;bottom:0;left:0;right:0;
+  padding:4px 6px;
+  background:linear-gradient(transparent,rgba(0,0,0,.55));
+  display:flex;align-items:flex-end;justify-content:center;
+}
+.photo-card .card-label{font-size:10px;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.6);text-align:center}
+.photo-card.selected{outline:2px solid #fff;outline-offset:2px;transform:scale(1.05)}
+.photo-card.shaking{animation:shake .5s ease}
+.photo-card.used{opacity:0;pointer-events:none;transform:scale(.8);transition:all .4s}
+
+/* All done */
+.all-done{margin-top:18px;text-align:center;animation:fadeUp 1s ease;z-index:1;position:relative}
+.all-done-title{
+  font-size:17px;
+  background:linear-gradient(135deg,#f5d0a0,#e8b4b8,#d4a0d0);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.all-done-sub{font-size:11px;color:rgba(255,255,255,.35);margin-top:4px}
+
+/* Footer */
+.footer{margin-top:20px;font-size:10px;color:rgba(255,255,255,.12);letter-spacing:3px;text-align:center;z-index:1;position:relative}
+
+/* Confetti */
+.confetti-container{position:fixed;inset:0;pointer-events:none;z-index:100}
+.confetti{
+  position:absolute;width:8px;height:8px;opacity:.8;
+  animation:confettiFall var(--fall-dur) ease-in forwards;
+  animation-delay:var(--delay);
+}
+@keyframes confettiFall{
+  0%{transform:translateY(-10px) rotate(0deg);opacity:1}
+  100%{transform:translateY(100vh) rotate(720deg);opacity:0}
+}
+
+/* Scrollbar */
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-thumb{background:rgba(0,0,0,.1);border-radius:3px}
+
+/* Mobile touch: tap-to-place indicator */
+.photo-card.tap-selected{
+  outline:2px solid #fbbf24;outline-offset:2px;
+  transform:scale(1.08);
+  box-shadow:0 0 16px rgba(251,191,36,.4);
+}
+</style>
+</head>
+<body>
+
+<!-- Stars background -->
+<div class="stars" id="stars"></div>
+
+<!-- Title -->
+<div class="title-area">
+  <h1>鱼在渠的彩色记忆</h1>
+  <div class="subtitle" id="subtitle">已解锁 0/7</div>
+  <div class="progress-bar" id="progressBar"></div>
+</div>
+
+<!-- Vase -->
+<div class="vase-wrap" id="vaseWrap">
+  <svg viewBox="60 10 320 260" id="vaseSvg"></svg>
+  <div class="vase-hint">↑ 点花朵，拖照片到书里 · 点花瓶回封面 ↑</div>
+</div>
+
+<!-- Book -->
+<div class="book-scene">
+  <div class="book is-cover" id="book">
+    <div class="book-spine"></div>
+
+    <div class="book-content" id="bookContent"></div>
+  </div>
+</div>
+
+<!-- Photo pool -->
+<div class="photo-pool" id="photoPool">
+  <div class="pool-title">📷 记忆碎片 · 拖动到书中</div>
+  <div class="pool-grid" id="poolGrid"></div>
+</div>
+
+<!-- All done message -->
+<div class="all-done" id="allDone" style="display:none">
+  <div class="all-done-title">🏡 七封信全部解锁！</div>
+  <div class="all-done-sub">点击花朵可以随时重读</div>
+</div>
+
+<div class="footer">with love ♥</div>
+
+<!-- Confetti container -->
+<div class="confetti-container" id="confetti"></div>
+
+<script>
+// ============================================================
+// DATA
+// ============================================================
+const FLOWERS = [
+  {
+    key:'red', c:'#DC2626', lc:'#fca5a5',
+    fl:'红玫瑰', t:'红', s:'勇气诞生于什么',
+    photos:[
+      {file:'photo/red1.jpg', label:'跳火群'},
+      {file:'photo/red.jpg', label:'勇敢的约会'}
+    ],
+    body:[
+      "写这段的时候正在看春晚,眼前一片红。\n然后看见你给我发了跳火群的视频。\n之前听成跳火圈,以为会拿盆子之类的容器给圈起来,结果就是木头叠在一起。\n那火跟野火一样,蹿老高了。",
+      "心情是们福建人真的是各方面都在诠释富贵险中求。\n勇敢的人有勇敢的习俗。",
+      "我喜欢听你说家乡的一切。\n听你在各个人生阶段的集体生活,听你来到我身边之前,有怎样的的际遇?是什么样的文化塑造了你?你选择让什么样的文化塑造你?\n因为喜欢,所以好奇,所以全情投入,然后越是投入,越是喜欢。\n感觉是我一直在在刨一个名为喜欢你的大洞,抬头时发现天空在洞口好小一个。\n偶尔会害怕,如果分开,我要花多长时间爬出来。",
+      "但把目光转向我所得到的时,我忽然不害怕了:\n我现在知道了博学的你、生气的你、害羞的你、感性的你、坏坏的你...我发现我还想知道更多的你。\n而幸运的是你必然有更多的你,因为我知道你是那种永远在成长的人。\n幸运的是我也是,更多的我眼中,一定也能倒映出更更更多的你!",
+      "未来的无数个你总是在我想要放弃的时候在我脑海中发出呼唤,我逐渐理解到:当渴望大于恐惧时,勇气就诞生了。\n勇敢的小渠,你是我勇敢的理由。"
+    ]
+  },
+  {
+    key:'orange', c:'#EA580C', lc:'#fdba74',
+    fl:'橙色郁金香', t:'橙', s:'知道是为哪坛醋包的饺子了不',
+    photos:[
+      {file:'photo/orange1.jpg', label:'橙'},
+      {file:'photo/orange.jpg', label:'傍晚的天空'}
+    ],
+    body:[
+      "宝子我整这么一出你是不是到死都会记得我们是橙上认识的了^ ^\n那样真的太好了。\n感谢橙叫橙。\n因为橙色无处不在,超市里深深浅浅的水果、花店里杂交繁育形态各异的花朵、傍晚时温热的太阳和天空......我要关于我的印象像一种颜色、一种随处可见的病毒,植入你又大又漂亮的脑子里。\n对,我就是那种喜欢什么就一定想法设法占为己有的人。\n我太喜欢你的脑子了,喜欢到恨不能剖开来研究的程度。",
+      "在橙上刷到你的时候,确实是因为无法忽视学历光环点了红心。但如果说仅有学历,达不到我对大脑的审美。\n一颗漂亮的脑子,除了具备中上的智力,还应该有随时准备理解任何人,从任何人身上学到东西的谦和,宽于待人,严于律己。\n我理解你表达自己被说装逼时的错愕,因为我明白你对亲密的人倾诉时的发心、我明白你不轻易说没有凭证的事情、我清楚被你认真聆听的感觉。\n装逼者期待他人是只发出赞美声音的物品,但在你这里我始终得到的是给人的对待,是给爱人的对待。",
+      "当然,谦和也只是你大脑性感的一个方面,你无数美好品质之一。\n还有很多很多无法言说的细节、一拍即合的时刻让我心动,等我整理整理发在下一份研究报告里,到那个时候素材也会更多。",
+      "最后想说,能匹配到你,谢谢你的南大,谢谢我的醒图,谢谢橙,谢谢你,谢谢命运。"
+    ]
+  },
+  {
+    key:'yellow', c:'#D97706', lc:'#fde68a',
+    fl:'向日葵', t:'黄', s:'飞黄腾达，其他不能播了',
+    photos:[
+      {file:'photo/yellow1.jpg', label:'灯火通明'},
+      {file:'photo/yellow.jpg', label:'舟山到宁波'}
+    ],
+    body:[
+      "不过本网站不公开哈,就聊不能播的!\n刘师傅业余喜欢看点精神分析,也喜欢精神分析别人。凭经验而言,Xp上能看出一个人的底色。\n性方面你喜欢年轻可以被掌控的客体,无论是轻微的s倾向和对纤细躯体的追求,体现的其实是同一件事,你需要在对事情绝对的控制中得到安全感,它带来的正面特质是责任心、靠谱,而负面特质是情绪的不自觉压抑。\n因为绝对的控制往往要求绝对的情绪稳定,但强烈的情绪本身就是一种难以掌控的变量。你习惯性地压抑自己的依赖和深情,因为流露这些情感意味着将伤害自己的权力交给了我,就像你自己写的那样,你怕我接不住。",
+      "这样的压抑还体现在当我们遇到问题时,你会以重建规则的方式向我倡议。\n那天你说要柏拉图的时候我很伤心,不仅仅是因为问题本身,还因为你的重心没有放在我们如何让性的体验变得更好,而是直接切断做这件事的必要性。\n我理解你的回避,因为这也是我自己熟悉的模式,我在亲密关系中也有类似的反应,但还好那天晚上的结局是问题解开相拥而眠。\n还好我们都愿意为了对方进一步地袒露自己。",
+      "性高潮的时刻无限接近死亡,正如聊性的话题也会在不知觉中无限接近人晦暗的本质。\n从舟山去宁波南站的大巴行至晚上六七点,周边厂房齐齐亮起黄澄澄的灯,一瞬间外滩般灯火通明,你拉住我的手贱嗖嗖说:\n\"重要的是解构到最后,留下来的人最珍贵。是吧宝宝?\""
+    ]
+  },
+  {
+    key:'green', c:'#16A34A', lc:'#86efac',
+    fl:'绿色洋桔梗', t:'绿', s:'求求你不要绿我（bushi',
+    photos:[
+      {file:'photo/green.jpg', label:'筷子'},
+      {file:'photo/green1.jpg', label:'在一起'}
+    ],
+    body:[
+      "绿色确实是嫉妒的颜色。\n古希腊人认为,嫉妒会导致体内黄色胆汁过度分泌,使人脸色发绿。诗人莎芙曾用绿色形容失恋的嫉妒之情:\n\"我的脸色比草更绿,我仿佛只差一步,便要踏入死亡。\"\n善妒的人能够理解,时常进入情感上的濒死体验是什么感觉。嫉妒带来努力,但他人眼中的努力可能只是一种不想溺死的挣扎。\n实际上人不会那么轻易死,得不到也有得不到的活法。本质还是贪心,觉得好的东西应该都是自己的才对。",
+      "也许我的爱是贪心的,但二十二岁不是一个适合下定论的年纪,我和身边的一切都在飞速变化。\n我现在也不确定我是否能够做到性与爱的分离,我不确定我是否会因为性的关系对人萌发好感,我甚至对你确定自己性爱分离这件事都感到不确定,也许我可以去赌之后你试过筷子腿之后祛魅,但你要是爱上我该如何自处?也许你真的祛魅了,但如果你有了新的爱好,比如a4腰、36D以及等等我原本没有计划要去追求的东西,我又有什么立场阻止你不去?\n我可以计划变得更漂亮,计划变得更勇敢,但是我无法计划到人心中瞬息万变的感觉。\n也许我真的能做到让你自由,但那个时候我真的还爱你吗?\n感情的事暂时难以得到答案,所以你可以赌。",
+      "看你勉强也不快乐。如果你一定要去,提前通知我,不要骗我。",
+      "最后附上诗的原文:\nFor whenever I look at you even briefly\nI can no longer say a single thing,\n\nbut my tongue is frozen in silence;\ninstantly a delicate flame runs beneath my skin;\nwith my eyes I see nothing;\nmy ears make a whirring noise.\n\n  A cold sweat covers me,\ntrembling seizes my body,\nand I am greener than grass.\nLacking but little of death do I seem."
+    ]
+  },
+  {
+    key:'cyan', c:'#0891B2', lc:'#a5f3fc',
+    fl:'绣球花', t:'青', s:'介于绿与蓝之间的青涩',
+    photos:[
+      {file:'photo/cyan1.jpg', label:'夜空青青'},
+      {file:'photo/cyan.jpg', label:'托举'}
+    ],
+    body:[
+      "二十二岁我携我所有年青的自卑与自傲,站在新的龙门前,惴惴不安。\n把所有的愿景留在普陀山最高的寺庙上,下山之后去准备期末考,制作作品集,投简历。我做事不算非常密集,我的精力还有待被锻炼,我的信心也是。我时常幻想以一个完美的姿态投入到现在生活中一切会变得有多顺利。\n但完美是虚空中的。\n那个把我从虚空中稳稳抱下来的人是你。",
+      "有时候我选择相信自己,不是因为自信,而是相信爱我的人的眼光。\n我永远会记得在咖啡馆局促不安地接完电话,以为自己就值五十块的时候,你语气夸张地表示震惊,看我的样子就像看要自我放弃的下一个papi酱。我每次推辞,你就说得更严重一点,塞给我不由分说的勇气。\n我记得出店里出来时看见夜空青青,当晚空气很冷,但你身边的气温依然达到了我所有不安的熔点。\n之后的事就像你预言的那样,我通过了很多场面试,得到了没想过能得到的赏识,拿到了超乎想象的offer。我知道了原来我可以不用一开始就很完美,但只要开始认真做了就可能有意想不到的收获。\n无休止的自我批判中间,是你托住我。",
+      "我在面试中不仅仅用了你教我的\"布道\"这个词。\nHR问我,是什么点燃你做内容的热情?回忆起我写作的初衷,个人用文字的力量,让好的事物走向更大的平台,发挥它的价值。又想起你对我说的话,为我做的一切,那是种相似的感觉,于是我终于总结道:\n\"那应该是一种托举感。\""
+    ]
+  },
+  {
+    key:'blue', c:'#2563EB', lc:'#93c5fd',
+    fl:'勿忘我', t:'蓝', s:'眼泪',
+    photos:[
+      {file:'photo/blue1.jpg', label:'独一无二'},
+      {file:'photo/blue.jpg', label:'蓝眼泪'}
+    ],
+    body:[
+      "蓝眼泪是浮游生物受海浪扰动而发出的幽蓝荧光，脆弱、美丽、可遇不可求。",
+      "我脑子里给人分类的系统像一个中药店。\n硕大的百眼橱，每种人放到对应的药斗子里。以前觉得能够能够治我的人无非就是那几个斗子里的。我所喜欢的也不过是那几个斗子。没有谁无可替代，我的痴迷仅限于被痴迷对象的某几个特质，与其本人可以做出安全清晰的隔离。\n混乱的约会时期，这种想法在我脑海里进一步成型。",
+      "但是和你约会让我陷入了真正的混乱。\n我抓不住你身上那个核心吸引到我的锚点。我曾经把你放进过其他很多斗子，但之后又必然会发生需要将你重新分类的事。长此以往我不得不为你多造一个斗子，让你单独为一类，而造完以后我发现，当我有需于人时，你成为了我翻找百眼橱时的第一优先级。于是擅长总结的我又发现：爱于我来说，发生在所有分类之前。\n所以我不知道怎么跟你解释我的忠诚，它对于我来说不是约束，而是爱自然发生的结果。\n我经常说你像我喜欢过的人的集合，但我认为你珍贵不是因为你像任何人而珍贵，仅仅因为你是你，我无法用任何方式分出类别的你。",
+      "有机会我们去看蓝眼泪吧，但你生活在海边，是不是早就看过了？\n看过也陪我再看一次好嘛，想和稀有的人看一种稀有的景色～"
+    ]
+  },
+  {
+    key:'purple', c:'#7C3AED', lc:'#c4b5fd',
+    fl:'紫色鸢尾花', t:'紫', s:'一样深邃的你',
+    photos:[
+      {file:'photo/purple.jpg', label:'气场能量'},
+      {file:'photo/purple1.jpg', label:'魔术师'}
+    ],
+    body:[
+      "网易云每次测试活动的审美都很好，即使是巴纳姆效应也让人印象深刻。\n但你给我留下紫色的印象可能还因为紫色是魔术师的颜色。",
+      "会变魔术的人是富有魅力的。\n这种魅力可能来源于，苦思一个呈现方式几个月，练习一个技法几十遍，只是为了呈现给观众瞬间的惊喜。而魔术的呈现又必然要隐去所有研习的过程———你不用知道我是如何辛苦地来到这里，你只需要享受这一刻。\n你的职业也给我这种感觉。\n你跟我说过的女装男让我印象深刻，可能因为我微妙地能理解到他的xp。不是脂包肌的程序员不是一个好魔术师么？三种特质综合在一起，让人觉得如果你想做一件事，你绝对有能力去实现，如果你想爱一个人，你能给出的爱一定温暖、厚重、严丝合缝。\n而你也确实做到了。\n你的爱给我你在此处我就不用慌张的定力，你的爱是看到我的自毁但不和我一起欺负我，你的爱是洞察权衡过仍然选择真诚的勇气。",
+      "古人云，施比受更有福。那魔术不是施的艺术的极致吗？\n你为我变了爱的魔术，而我不想只做鼓掌欢呼的观众。",
+      "现在闭上眼睛认真说三个爱我的理由～！"
+    ]
+  }
+];
+
+const POS = [{x:95,y:55},{x:140,y:35},{x:185,y:48},{x:225,y:28},{x:265,y:45},{x:305,y:32},{x:345,y:52}];
+const SX  = [170,175,185,210,235,240,235];
+
+// ============================================================
+// STATE
+// ============================================================
+let selectedFlower = null;  // 0-6 or null
+let matched = FLOWERS.map(()=>[false,false]); // per flower, per slot
+let used = {};              // photoId -> true
+let revealed = FLOWERS.map(()=>false);
+let showBody = false;
+let celebrating = false;
+let dragItem = null;        // {fi, si, ...}
+let tapSelected = null;     // for mobile tap-to-place
+let slotPhotos = {};        // 'fi-si' -> photoObj
+
+// Build shuffled photo pool
+function shuffle(arr){
+  const a=[...arr];
+  for(let i=a.length-1;i>0;i--){const j=0|Math.random()*(i+1);[a[i],a[j]]=[a[j],a[i]];}
+  return a;
+}
+const photoPool = shuffle(
+  FLOWERS.flatMap((f,fi)=> f.photos.map((p,si)=>({
+    id:`${fi}-${si}`, fi, si, file:p.file, label:p.label, color:f.c
+  })))
+);
+
+// ============================================================
+// INIT STARS
+// ============================================================
+(function initStars(){
+  const el = document.getElementById('stars');
+  let html='';
+  for(let i=0;i<35;i++){
+    const x=Math.random()*100, y=Math.random()*55;
+    const dur=2+Math.random()*3, delay=Math.random()*3, opa=.12+Math.random()*.3;
+    html+=`<div class="star" style="left:${x}%;top:${y}%;--dur:${dur}s;--delay:${delay}s;--opa:${opa}"></div>`;
+  }
+  el.innerHTML=html;
+})();
+
+// ============================================================
+// INIT PROGRESS BAR
+// ============================================================
+function renderProgress(){
+  const prog = revealed.filter(Boolean).length;
+  document.getElementById('subtitle').textContent = `已解锁 ${prog}/7`;
+  const bar = document.getElementById('progressBar');
+  bar.innerHTML = FLOWERS.map((f,i)=>`<div class="progress-dot" style="width:${revealed[i]?16:8}px;background:${revealed[i]?f.c:'rgba(255,255,255,.12)'}"></div>`).join('');
+}
+
+// ============================================================
+// SVG VASE & FLOWERS
+// ============================================================
+function buildVase(){
+  const svg = document.getElementById('vaseSvg');
+  let html = '';
+
+  // Stems
+  POS.forEach((p,i)=>{
+    html+=`<path d="M200,210 Q${SX[i]},${(p.y+235)/2} ${p.x},${p.y+25}" stroke="#3a7d44" stroke-width="2.2" fill="none" opacity=".7"/>`;
+  });
+
+  // Vase body
+  html+=`<path d="M165,210 L158,248 Q158,265 200,265 Q242,265 242,248 L235,210 Z" fill="#c49060" stroke="#a0764e" stroke-width="1"/>`;
+  html+=`<ellipse cx="200" cy="210" rx="37" ry="7" fill="#ddb896" stroke="#a0764e" stroke-width=".8"/>`;
+
+  // Flowers
+  const flowerShapes = [
+    // 0: red - 7-petal rosette
+    (cx,cy,c,i)=>{
+      let g=`<g class="flower-group" data-fi="${i}" onclick="pickFlower(${i})">`;
+      for(let a=0;a<360;a+=51) g+=`<ellipse cx="${cx}" cy="${cy}" rx="5" ry="11" fill="${c}" opacity=".8" transform="rotate(${a} ${cx} ${cy}) translate(0,-4)"/>`;
+      g+=`<circle cx="${cx}" cy="${cy}" r="5.5" fill="${c}" opacity=".6"/>`;
+      g+=`<circle cx="${cx}" cy="${cy}" r="3" fill="#fff" opacity=".2"/>`;
+      return g+`</g>`;
+    },
+    // 1: orange - tulip
+    (cx,cy,c,i)=>{
+      let g=`<g class="flower-group" data-fi="${i}" onclick="pickFlower(${i})">`;
+      g+=`<ellipse cx="${cx-6}" cy="${cy+2}" rx="7" ry="14" fill="${c}" opacity=".85"/>`;
+      g+=`<ellipse cx="${cx+6}" cy="${cy+2}" rx="7" ry="14" fill="${c}" opacity=".85"/>`;
+      g+=`<ellipse cx="${cx}" cy="${cy}" rx="6" ry="13" fill="${c}" opacity="1"/>`;
+      return g+`</g>`;
+    },
+    // 2: yellow - sunflower
+    (cx,cy,c,i)=>{
+      let g=`<g class="flower-group" data-fi="${i}" onclick="pickFlower(${i})">`;
+      for(let a=0;a<360;a+=30) g+=`<ellipse cx="${cx}" cy="${cy-10}" rx="3.5" ry="9" fill="${c}" opacity=".9" transform="rotate(${a} ${cx} ${cy})"/>`;
+      g+=`<circle cx="${cx}" cy="${cy}" r="7" fill="#92400e" opacity="1"/>`;
+      return g+`</g>`;
+    },
+    // 3: green - 5-petal
+    (cx,cy,c,i)=>{
+      let g=`<g class="flower-group" data-fi="${i}" onclick="pickFlower(${i})">`;
+      for(let a=0;a<360;a+=72) g+=`<ellipse cx="${cx}" cy="${cy-8}" rx="7" ry="12" fill="${c}" opacity=".7" transform="rotate(${a} ${cx} ${cy})"/>`;
+      g+=`<circle cx="${cx}" cy="${cy}" r="3" fill="#fff" opacity=".3"/>`;
+      return g+`</g>`;
+    },
+    // 4: cyan - hydrangea cluster
+    (cx,cy,c,i)=>{
+      const pts=[[-6,-8],[6,-8],[0,-14],[-9,0],[9,0],[-5,-2],[5,-2],[0,-6],[-3,4],[3,4]];
+      let g=`<g class="flower-group" data-fi="${i}" onclick="pickFlower(${i})">`;
+      pts.forEach(([dx,dy])=>{ g+=`<circle cx="${cx+dx}" cy="${cy+dy}" r="4" fill="${c}" opacity=".7"/>`;});
+      return g+`</g>`;
+    },
+    // 5: blue - forget-me-not
+    (cx,cy,c,i)=>{
+      const pts=[[0,-8],[8,-2],[-8,-2],[5,5],[-5,5]];
+      let g=`<g class="flower-group" data-fi="${i}" onclick="pickFlower(${i})">`;
+      pts.forEach(([dx,dy])=>{ g+=`<circle cx="${cx+dx}" cy="${cy+dy}" r="5" fill="${c}" opacity=".8"/>`;});
+      [[0,-8],[8,-2],[-8,-2]].forEach(([dx,dy])=>{ g+=`<circle cx="${cx+dx}" cy="${cy+dy}" r="1.8" fill="#fbbf24" opacity="1"/>`;});
+      return g+`</g>`;
+    },
+    // 6: purple - iris
+    (cx,cy,c,i)=>{
+      let g=`<g class="flower-group" data-fi="${i}" onclick="pickFlower(${i})">`;
+      for(let a=0;a<360;a+=120) g+=`<ellipse cx="${cx}" cy="${cy-10}" rx="4" ry="14" fill="${c}" opacity=".85" transform="rotate(${a} ${cx} ${cy})"/>`;
+      for(let a=60;a<360;a+=120) g+=`<ellipse cx="${cx}" cy="${cy+8}" rx="5" ry="10" fill="${c}" opacity=".6" transform="rotate(${a} ${cx} ${cy})"/>`;
+      return g+`</g>`;
+    }
+  ];
+
+  POS.forEach((p,i)=>{
+    html += flowerShapes[i](p.x, p.y, FLOWERS[i].c, i);
+  });
+
+  svg.innerHTML = html;
+  updateFlowerStates();
+}
+
+function updateFlowerStates(){
+  document.querySelectorAll('.flower-group').forEach(g=>{
+    const fi = +g.dataset.fi;
+    g.style.transformOrigin = `${POS[fi].x}px ${POS[fi].y}px`;
+    const isActive = selectedFlower === fi;
+    const isDone = revealed[fi];
+    g.style.transform = isActive ? 'scale(1.15)' : 'scale(1)';
+    g.style.filter = isActive ? `drop-shadow(0 0 10px ${FLOWERS[fi].c})` : isDone ? `drop-shadow(0 0 4px ${FLOWERS[fi].c}50)` : 'none';
+    g.style.opacity = isActive ? 1 : isDone ? 0.65 : 0.85;
+    // Add/remove check mark
+    const existingCheck = g.querySelector('.flower-check');
+    if(isDone && !existingCheck){
+      const txt = document.createElementNS('http://www.w3.org/2000/svg','text');
+      txt.setAttribute('x', POS[fi].x);
+      txt.setAttribute('y', POS[fi].y+4);
+      txt.setAttribute('text-anchor','middle');
+      txt.setAttribute('font-size','8');
+      txt.setAttribute('fill','#fff');
+      txt.setAttribute('class','flower-check');
+      txt.textContent='✓';
+      g.appendChild(txt);
+    }
+  });
+}
+
+// ============================================================
+// PICK FLOWER
+// ============================================================
+window.pickFlower = function(i){
+  if(i === selectedFlower) return;
+  showBody = false;
+  tapSelected = null;
+  selectedFlower = i;
+  if(revealed[i]) setTimeout(()=>{ showBody=true; renderBook(); },100);
+  updateFlowerStates();
+  renderBook();
+  renderPhotoPool();
+};
+
+// ============================================================
+// RENDER BOOK
+// ============================================================
+function renderBook(){
+  const book = document.getElementById('book');
+  const content = document.getElementById('bookContent');
+  const allDone = revealed.every(Boolean);
+
+  if(selectedFlower === null){
+    // Cover
+    book.className = 'book is-cover';
+    book.style.minHeight = '340px';
+    content.innerHTML = `
+      <div class="welcome">
+        <div class="cover-border">
+          <div class="cover-ornament">✦ ✦ ✦</div>
+          <div class="welcome-title">以色彩为题<br>花语为引<br>写了七封信</div>
+          <div class="welcome-desc" style="text-align:left">图片上的内容基本上都是信里提到的，点击花朵，以小标题、图片颜色或内容作为线索，把图片拖到对应的页面中，解锁七种颜色的信吧</div>
+          <div class="welcome-sign">— 小鱼 —</div>
+        </div>
+        <div class="cover-year">2025.9-2026.2</div>
+      </div>`;
+    return;
+  }
+
+  // Switch to page style
+  book.className = 'book is-page' + (celebrating ? ' celebrating' : '');
+
+  const f = FLOWERS[selectedFlower];
+  const cm = matched[selectedFlower];
+  const isDone = revealed[selectedFlower];
+
+  if(!isDone){
+    // Drop zone page
+    book.style.minHeight = '340px';
+    content.innerHTML = `
+      <div class="drop-page">
+        <div class="flower-header">
+          <div class="flower-icon" style="background:${f.c}">${f.t}</div>
+          <div>
+            <div class="flower-name">${f.s}</div>
+            <div class="flower-type">${f.fl}</div>
+          </div>
+        </div>
+        <div class="drop-hint">将这朵花的两张记忆照片拖到下方 ↓</div>
+        <div class="drop-zones">
+          ${[0,1].map(si=>{
+            const matched_here = cm[si];
+            const sp = slotPhotos[`${selectedFlower}-${si}`];
+            if(matched_here && sp){
+              return `<div class="drop-zone matched" id="slot${si}" data-slot="${si}" style="border-color:${f.c};background:${f.c}12">
+                <img class="matched-img" src="${sp.file}" alt="${sp.label}"/>
+                <div class="matched-check" style="color:${f.c}">✓</div>
+              </div>`;
+            }
+            return `<div class="drop-zone" id="slot${si}" data-slot="${si}" style="border-color:rgba(0,0,0,.15)">
+              <div class="drop-placeholder">照片 ${si+1}<br><small>拖到这里</small></div>
+            </div>`;
+          }).join('')}
+        </div>
+      </div>`;
+
+    // Attach drop events
+    [0,1].forEach(si=>{
+      const zone = document.getElementById('slot'+si);
+      if(!zone || cm[si]) return;
+      zone.addEventListener('dragover', e=>{e.preventDefault();e.dataTransfer.dropEffect='move';zone.classList.add('drag-over');});
+      zone.addEventListener('dragleave', ()=>zone.classList.remove('drag-over'));
+      zone.addEventListener('drop', e=>{
+        e.preventDefault();
+        zone.classList.remove('drag-over');
+        if(dragItem) tryDrop(dragItem, si);
+      });
+      // Tap-to-place: click on zone to place selected card
+      zone.addEventListener('click', ()=>{
+        if(tapSelected) tryDrop(tapSelected, si);
+      });
+    });
+    return;
+  }
+
+  // Letter page (revealed)
+  book.style.minHeight = '340px';
+  const p0 = f.photos[0], p1 = f.photos[1];
+  content.innerHTML = `
+    <div class="letter-page">
+      <div class="letter-header" style="border-bottom:1px solid ${f.lc}">
+        <div class="flower-icon" style="background:${f.c}">${f.t}</div>
+        <div>
+          <div class="flower-name">${f.s}</div>
+          <div class="flower-type">${f.fl}</div>
+        </div>
+      </div>
+      <div class="letter-photos">
+        <div class="letter-photo-thumb">
+          <img src="${p0.file}" alt="${p0.label}"/>
+        </div>
+        <div class="letter-photo-thumb">
+          <img src="${p1.file}" alt="${p1.label}"/>
+        </div>
+      </div>
+      ${showBody ? `<div class="letter-body">${f.body.map(p=>`<p>${escHtml(p)}</p>`).join('')}</div>` : ''}
+      <div class="letter-nav">
+        <div class="letter-nav-dots">
+          ${FLOWERS.map((fl,i)=>`<div class="letter-nav-dot" onclick="pickFlower(${i})" style="width:${selectedFlower===i?9:5}px;height:${selectedFlower===i?9:5}px;background:${fl.c};opacity:${selectedFlower===i?1:revealed[i]?.5:.15}"></div>`).join('')}
+        </div>
+        <div class="letter-nav-page">${selectedFlower+1}/7</div>
+      </div>
+    </div>`;
+}
+
+function escHtml(s){
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');
+}
+
+// ============================================================
+// RENDER PHOTO POOL
+// ============================================================
+function renderPhotoPool(){
+  const pool = document.getElementById('photoPool');
+  const grid = document.getElementById('poolGrid');
+  const allDone = revealed.every(Boolean);
+  const donEl = document.getElementById('allDone');
+
+  if(allDone){
+    pool.style.display='none';
+    donEl.style.display='block';
+    return;
+  }
+  // Hide photo pool on cover page
+  if(selectedFlower === null){
+    pool.style.display='none';
+    donEl.style.display='none';
+    return;
+  }
+  pool.style.display='block';
+  donEl.style.display='none';
+
+  grid.innerHTML = photoPool.filter(p=>!used[p.id]).map(p=>{
+    const f = FLOWERS[p.fi];
+    return `<div class="photo-card${tapSelected&&tapSelected.id===p.id?' tap-selected':''}"
+      draggable="true"
+      data-pid="${p.id}" data-fi="${p.fi}" data-si="${p.si}"
+      style="border:1.5px solid rgba(255,255,255,.15);box-shadow:0 2px 8px rgba(0,0,0,.25)">
+      <img src="${p.file}" alt="${p.label}" draggable="false"/>
+    </div>`;
+  }).join('');
+
+  // Attach drag events
+  grid.querySelectorAll('.photo-card').forEach(card=>{
+    const pid = card.dataset.pid;
+    const photo = photoPool.find(p=>p.id===pid);
+
+    card.addEventListener('dragstart', e=>{
+      dragItem = photo;
+      e.dataTransfer.effectAllowed='move';
+      try{e.dataTransfer.setData('text/plain',pid)}catch(x){}
+      card.style.opacity='.5';
+    });
+    card.addEventListener('dragend', ()=>{
+      dragItem=null;
+      card.style.opacity='1';
+    });
+
+    // Tap-to-place for mobile
+    card.addEventListener('click', ()=>{
+      if(tapSelected && tapSelected.id === pid){
+        tapSelected = null;
+      } else {
+        tapSelected = photo;
+      }
+      renderPhotoPool();
+    });
+  });
+}
+
+// ============================================================
+// TRY DROP
+// ============================================================
+function tryDrop(photo, slotIdx){
+  if(selectedFlower === null) return;
+
+  if(photo.fi === selectedFlower){
+    // Correct!
+    matched[selectedFlower][slotIdx] = true;
+    used[photo.id] = true;
+    slotPhotos[`${selectedFlower}-${slotIdx}`] = photo;
+    tapSelected = null;
+
+    if(matched[selectedFlower][0] && matched[selectedFlower][1]){
+      // Both matched - celebrate then reveal
+      celebrating = true;
+      renderBook();
+      renderPhotoPool();
+      fireConfetti(FLOWERS[selectedFlower].c);
+      setTimeout(()=>{
+        revealed[selectedFlower] = true;
+        showBody = true;
+        celebrating = false;
+        renderProgress();
+        renderBook();
+        renderPhotoPool();
+        updateFlowerStates();
+      }, 800);
+    } else {
+      renderBook();
+      renderPhotoPool();
+    }
+  } else {
+    // Wrong!
+    const zone = document.getElementById('slot'+slotIdx);
+    if(zone){
+      zone.classList.add('wrong');
+      zone.style.borderColor='#ef4444';
+      setTimeout(()=>{
+        zone.classList.remove('wrong');
+        zone.style.borderColor='rgba(0,0,0,.15)';
+      },500);
+    }
+    // Shake the card
+    const card = document.querySelector(`.photo-card[data-pid="${photo.id}"]`);
+    if(card){
+      card.classList.add('shaking');
+      setTimeout(()=>card.classList.remove('shaking'),500);
+    }
+    tapSelected = null;
+    renderPhotoPool();
+  }
+  dragItem = null;
+}
+
+// ============================================================
+// CONFETTI
+// ============================================================
+function fireConfetti(color){
+  const container = document.getElementById('confetti');
+  const colors = [color, '#fff', '#fbbf24', color+'88', '#f0abfc'];
+  let html='';
+  for(let i=0;i<40;i++){
+    const c = colors[i%colors.length];
+    const left = 10+Math.random()*80;
+    const dur = 1.5+Math.random()*2;
+    const delay = Math.random()*0.5;
+    const size = 5+Math.random()*8;
+    const shape = Math.random()>.5 ? `border-radius:50%` : `border-radius:2px;transform:rotate(${Math.random()*360}deg)`;
+    html+=`<div class="confetti" style="left:${left}%;top:-10px;width:${size}px;height:${size}px;background:${c};${shape};--fall-dur:${dur}s;--delay:${delay}s"></div>`;
+  }
+  container.innerHTML=html;
+  setTimeout(()=>container.innerHTML='', 4000);
+}
+
+// ============================================================
+// MOBILE TOUCH DRAG SUPPORT
+// ============================================================
+(function initTouchDrag(){
+  let touchItem = null;
+  let ghostEl = null;
+  let lastTouchX=0, lastTouchY=0;
+
+  document.addEventListener('touchstart', e=>{
+    const card = e.target.closest('.photo-card');
+    if(!card) return;
+    const pid = card.dataset.pid;
+    touchItem = photoPool.find(p=>p.id===pid);
+    if(!touchItem) return;
+
+    const touch = e.touches[0];
+    lastTouchX = touch.clientX;
+    lastTouchY = touch.clientY;
+
+    // Create ghost
+    ghostEl = card.cloneNode(true);
+    ghostEl.style.position='fixed';
+    ghostEl.style.width=card.offsetWidth+'px';
+    ghostEl.style.height=card.offsetHeight+'px';
+    ghostEl.style.zIndex='1000';
+    ghostEl.style.opacity='.8';
+    ghostEl.style.pointerEvents='none';
+    ghostEl.style.transform='scale(1.1)';
+    ghostEl.style.left=(touch.clientX - card.offsetWidth/2)+'px';
+    ghostEl.style.top=(touch.clientY - card.offsetHeight/2)+'px';
+    document.body.appendChild(ghostEl);
+
+    card.style.opacity='.3';
+  }, {passive:true});
+
+  document.addEventListener('touchmove', e=>{
+    if(!touchItem || !ghostEl) return;
+    e.preventDefault();
+    const touch = e.touches[0];
+    lastTouchX = touch.clientX;
+    lastTouchY = touch.clientY;
+    ghostEl.style.left=(touch.clientX - ghostEl.offsetWidth/2)+'px';
+    ghostEl.style.top=(touch.clientY - ghostEl.offsetHeight/2)+'px';
+
+    // Highlight drop zones
+    [0,1].forEach(si=>{
+      const zone = document.getElementById('slot'+si);
+      if(!zone) return;
+      const rect = zone.getBoundingClientRect();
+      if(touch.clientX>=rect.left && touch.clientX<=rect.right && touch.clientY>=rect.top && touch.clientY<=rect.bottom){
+        zone.classList.add('drag-over');
+      } else {
+        zone.classList.remove('drag-over');
+      }
+    });
+  }, {passive:false});
+
+  document.addEventListener('touchend', e=>{
+    if(!touchItem) return;
+
+    // Check if dropped on a zone
+    let dropped = false;
+    [0,1].forEach(si=>{
+      const zone = document.getElementById('slot'+si);
+      if(!zone) return;
+      const rect = zone.getBoundingClientRect();
+      if(lastTouchX>=rect.left && lastTouchX<=rect.right && lastTouchY>=rect.top && lastTouchY<=rect.bottom){
+        tryDrop(touchItem, si);
+        dropped = true;
+      }
+      zone.classList.remove('drag-over');
+    });
+
+    // Clean up
+    if(ghostEl){ ghostEl.remove(); ghostEl=null; }
+    // Restore card opacity
+    if(touchItem){
+      const card = document.querySelector(`.photo-card[data-pid="${touchItem.id}"]`);
+      if(card) card.style.opacity='1';
+    }
+    touchItem = null;
+  });
+})();
+
+// ============================================================
+// INIT
+// ============================================================
+renderProgress();
+buildVase();
+renderBook();
+renderPhotoPool();
+
+// Vase click -> return to cover
+document.getElementById('vaseWrap').addEventListener('click', function(e){
+  if(e.target.closest('.flower-group')) return;
+  if(selectedFlower === null) return;
+  showBody = false;
+  tapSelected = null;
+  selectedFlower = null;
+  updateFlowerStates();
+  renderBook();
+  renderPhotoPool();
+});
+</script>
+</body>
+</html>
